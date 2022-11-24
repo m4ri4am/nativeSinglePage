@@ -143,11 +143,7 @@ function handleModalHeader() {
 //handle modal (alerting card) table 
 function handleModalTableData(rooms) {
     const tableBody = document.getElementById('tableBodyModal')
-    console.log("roooms", rooms)
-
     rooms.forEach(room => {
-        console.log("inner roooms", room)
-
         const tr = document.createElement('tr')
         for (const property in room) {
             if (property == 'name') {
@@ -157,24 +153,26 @@ function handleModalTableData(rooms) {
                 tableBody.appendChild(tr)
             }
         }
-
-        room.rates.forEach(roomCat => {
-            const tr = document.createElement('tr')
-            for (const property in roomCat) {
-                console.log("property", property);
-
-                if (property == 'boardName' || property == 'boardCode' || property == 'net') {
-                    const td = document.createElement('td')
-                    td.innerHTML = roomCat[property]
-                    tr.appendChild(td)
-                    tableBody.appendChild(tr)
-                }
-            }
-        })
+        handleCategoriesShow(tableBody,room);
         emptyModal(tableBody)
     })
-
 }
+
+//handle show categories in modal table body
+function handleCategoriesShow(table,room){
+    room.rates.forEach(roomCat => {
+        const tr = document.createElement('tr')
+        for (const property in roomCat) {
+            if (property == 'boardName' || property == 'boardCode' || property == 'net') {
+                const td = document.createElement('td')
+                td.innerHTML = roomCat[property]
+                tr.appendChild(td)
+                table.appendChild(tr)
+            }
+        }
+    })
+}
+
 
 //remove elemnts to append new data on click with out duplicatio of data
 function emptyModal(element) {
