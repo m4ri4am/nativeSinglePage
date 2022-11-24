@@ -47,6 +47,7 @@ function fetchAvailableHotels(uuid) {
 }
 // end of requests sections
 
+
 //handle rendering cities in dropdown
 function renderCities() {
     const list = document.getElementById("cityList");
@@ -126,9 +127,7 @@ function handleTableData(availableHotels) {
 
 //remove elemnts to append new data on click without duplication of data in main data table
 function emptyMainTable(element) {
-    while (element.firstChild) {
-        element.removeChild(element.firstChild);
-    }
+    element.replaceChildren(element.firstChild);
 }
 
 //handle table header of modal table
@@ -165,9 +164,7 @@ function handleModalTableData(rooms) {
 function emptyModal(element) {
     const modalEl = document.getElementById('exampleModal')
     modalEl.addEventListener('hidden.bs.modal', () => {
-        while (element.firstChild) {
-            element.removeChild(element.firstChild);
-        }
+            element.replaceChildren(element.firstChild);
     })
 }
 
