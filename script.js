@@ -8,6 +8,7 @@ const filters = {
     bed: 0,
     room: 1
 }
+
 // reqests sections
 function fetchCities() {
     const cities = fetch('https://happytrip.yaso.dev/api/cities')
@@ -98,7 +99,7 @@ function handleMainTableHeader() {
 //handle main table body 
 function handleTableData(availableHotels) {
     const tableBody = document.getElementById('tableBody');
-    emptyMainTable(tableBody);
+    tableBody.replaceChildren(tableBody.firstChild); //remove rows from table 
     availableHotels.forEach(hotel => {
         const tr = document.createElement('tr');
         for (const property in hotel) {
@@ -114,7 +115,7 @@ function handleTableData(availableHotels) {
         btn.className = 'btn btn-primary';
         btn.addEventListener('click', () => {
             handleModalHeader();
-            handleModal(hotel.rooms);
+            handleModalTableData(hotel.rooms)
         })
         btn.setAttribute('class', 'btn btn-primary');
         btn.setAttribute('id', 'details-button');
@@ -125,10 +126,6 @@ function handleTableData(availableHotels) {
     })
 }
 
-//remove elemnts to append new data on click without duplication of data in main data table
-function emptyMainTable(element) {
-    element.replaceChildren(element.firstChild);
-}
 
 //handle table header of modal table
 function handleModalHeader() {
@@ -146,43 +143,47 @@ function handleModalHeader() {
 //handle modal (alerting card) table 
 function handleModalTableData(rooms) {
     const tableBody = document.getElementById('tableBodyModal')
-    rooms.rates.forEach(room => {
+    console.log("roooms", rooms)
+
+    rooms.forEach(room => {
+        console.log("inner roooms", room)
+
         const tr = document.createElement('tr')
         for (const property in room) {
-            if (property == 'boardName' || property == 'boardCode' || property == 'net') {
+            if (property == 'name') {
                 const td = document.createElement('td')
                 td.innerHTML = room[property]
                 tr.appendChild(td)
                 tableBody.appendChild(tr)
             }
         }
+
+        room.rates.forEach(roomCat => {
+            const tr = document.createElement('tr')
+            for (const property in roomCat) {
+                console.log("property", property);
+
+                if (property == 'boardName' || property == 'boardCode' || property == 'net') {
+                    const td = document.createElement('td')
+                    td.innerHTML = roomCat[property]
+                    tr.appendChild(td)
+                    tableBody.appendChild(tr)
+                }
+            }
+        })
         emptyModal(tableBody)
     })
+
 }
 
 //remove elemnts to append new data on click with out duplicatio of data
 function emptyModal(element) {
     const modalEl = document.getElementById('exampleModal')
     modalEl.addEventListener('hidden.bs.modal', () => {
-            element.replaceChildren(element.firstChild);
+        element.replaceChildren(element.firstChild);
     })
 }
 
-//add modal header (meta data for modal)
-function handleModal(roomsCategories) {
-    const modal = document.getElementById('modal-main-body');
-    const roomName = document.createElement('p');
-    const roomCode = document.createElement('p');
-    const boardCode = document.createElement('p');
-    let details = [roomName, roomCode, boardCode]
-    details.forEach(element => modal.appendChild(element))
-    roomsCategories.forEach(roomCategory => {
-        handleModalTableData(roomCategory)
-        roomName.innerHTML = "Room Category Name : " + roomCategory.name;
-        roomCode.innerHTML = 'Room Category Code : ' + roomCategory.code;
-    })
-    emptyModal(modal)
-}
 
 
 renderCities();
