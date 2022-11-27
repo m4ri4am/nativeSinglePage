@@ -154,7 +154,15 @@ function handleModalTableData(rooms) {
             }
         }
         handleCategoriesShow(tableBody,room);
-        emptyModal(tableBody)
+    })
+    emptyModal(tableBody)
+}
+
+//remove elemnts to append new data on click with out duplicatio of data
+function emptyModal(element) {
+    const modalEl = document.getElementById('exampleModal')
+    modalEl.addEventListener('hidden.bs.modal', () => {
+        element.replaceChildren(element.firstChild);
     })
 }
 
@@ -174,13 +182,6 @@ function handleCategoriesShow(table,room){
 }
 
 
-//remove elemnts to append new data on click with out duplicatio of data
-function emptyModal(element) {
-    const modalEl = document.getElementById('exampleModal')
-    modalEl.addEventListener('hidden.bs.modal', () => {
-        element.replaceChildren(element.firstChild);
-    })
-}
 
 
 
